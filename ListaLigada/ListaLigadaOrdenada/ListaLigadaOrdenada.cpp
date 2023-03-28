@@ -128,21 +128,19 @@ void inserirElemento()
 	if (primeiro == NULL)
 	{
 		primeiro = novo;
+		ultimo = primeiro;
 	}
 	else
 	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
-		}
-		aux->prox = novo;
+		ultimo->prox = novo;
+		ultimo = novo;
 	}
+	
 }
 
 void excluirElemento()
 {
-
+	//ver se o novo elemento é maior que  o primeiro e menor que o ultimo
 }
 
 void buscarElemento()
