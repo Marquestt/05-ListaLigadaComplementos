@@ -8,6 +8,8 @@ struct NO {
 };
 
 NO* primeiro = NULL;
+NO* ultimo = NULL;
+NO* anterior = NULL;
 
 // headers
 void menu();
@@ -125,27 +127,143 @@ void inserirElemento()
 	cin >> novo->valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
-		primeiro = novo;
-		ultimo = primeiro;
+	NO* aux = primeiro;
+	while (aux != NULL) {
+		if (aux->valor == novo->valor)
+		{
+			cout << "ELEMENTO DUPLICADO\n";
+			return;
+		}
+		aux = aux->prox;
 	}
-	else
-	{
+	if (primeiro == NULL) {
+		primeiro = novo;
+		ultimo = novo;
+	}
+	else if (novo->valor < primeiro->valor) {
+		novo->prox = primeiro;
+		primeiro = novo;
+	}
+	else if (novo->valor > ultimo->valor) {
 		ultimo->prox = novo;
 		ultimo = novo;
 	}
-	
+	else {
+		NO* aux = primeiro->prox;
+		NO* anterior = primeiro;
+
+		while (aux != NULL) {
+			if (aux->valor >= novo->valor) {
+				anterior->prox = novo;
+				novo->prox = aux;
+				break;
+			}
+			anterior = aux;
+			aux = aux->prox;
+		}
+	}
 }
 
 void excluirElemento()
 {
 	//ver se o novo elemento é maior que  o primeiro e menor que o ultimo
+	int valor;
+	NO* exclu = NULL;
+	NO* aux = primeiro;
+	NO* anterior = NULL;
+
+	if (primeiro == NULL) {
+		cout << "Lista vazia\n";
+		return;
+	}
+
+	cout << "Qual elemento deseja excluir?\n";
+	cin >> valor;
+
+	if (valor < primeiro->valor)
+	{
+		cout << "ELEMENTO NAO ENCONTRADO\n";
+		return;
+	}
+	else if (valor > ultimo->valor)
+	{
+		cout << "ELEMENTO NAO ENCONTRADO\n";
+		return;
+	}
+	else
+	{
+		while (aux != NULL) {
+			if (aux->valor == valor) {
+				if (anterior == NULL) {
+					primeiro = aux->prox;
+				}
+				else {
+					anterior->prox = aux->prox;
+				}
+				cout << "EXCLUIDO\n";
+				free(aux);
+				return;
+			}
+			anterior = aux;
+			aux = aux->prox;
+		}
+	}
+	cout << "NAO ENCONTRADO\n";
 }
+
 
 void buscarElemento()
 {
+	NO* busca = (NO*)malloc(sizeof(NO));
+	if (busca == NULL)
+	{
+		return;
+	}
 
+	if (primeiro == NULL)
+	{
+		cout << "Lista vazia \n";
+		return;
+	}
+
+	cout << "Qual elemento deseja buscar?\n";
+	cin >> busca->valor;
+	busca->prox = NULL;
+	int x = 0;
+
+	NO* aux = primeiro;
+
+	if (busca->valor > ultimo->valor)
+	{
+		cout << "NAO ENCONTRADO\n";
+	}
+	else
+	{
+		if (busca->valor < primeiro->valor)
+		{
+			cout << "NAO ENCONTRADO\n";
+		}
+		else
+		{
+			while (aux != NULL)
+			{
+				if (aux->valor == busca->valor)
+				{
+					x++;
+				}
+				aux = aux->prox;
+			}
+			if (x == 0)
+			{
+
+				cout << "NAO ENCONTRADO\n";
+			}
+			else
+			{
+				cout << "ENCONTRADO\n";
+			}
+		}
+	}
 }
 
 
